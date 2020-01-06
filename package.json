@@ -1,0 +1,46 @@
+{
+  "name": "ts-setting-test",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gulp": "gulp",
+    "build": "npm run clean && tsc",
+    "postbuild": "ef-tspm && npm run copy-files",
+    "dev": "tsc -w",
+    "clean": "rimraf dist/",
+    "copy-files": "copyfiles -u 1 src/**/*.css dist",
+    "lint": "eslint '**/*.{ts}' --quiet --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "sNyung",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@ef-carbon/tspm": "^2.2.5",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0",
+    "copyfiles": "^2.1.1",
+    "eslint": "^6.8.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "rimraf": "^3.0.0",
+    "tsify": "^4.0.1",
+    "typescript": "^3.7.4",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "reset-css": "^5.0.1"
+  }
+}
