@@ -1,47 +1,48 @@
-const { series, src, dest, parallel } = require('gulp');
-const browserify = require('browserify');
-const tsify = require('tsify');
-const sourcemaps = require('gulp-sourcemaps');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const concat = require('gulp-concat');
-const cleanCSS = require('gulp-clean-css');
+const { series, src, dest, parallel } = require("gulp");
+const browserify = require("browserify");
+const tsify = require("tsify");
+const sourcemaps = require("gulp-sourcemaps");
+const source = require("vinyl-source-stream");
+const buffer = require("vinyl-buffer");
+const concat = require("gulp-concat");
+const cleanCSS = require("gulp-clean-css");
+const tsconfig = require("./tsconfig.json");
 
 const paths = {
-  pages: ['./*.html']
+  pages: ["./public/*"]
 };
 
-function test2() {
-  return src(paths.pages)
-    .pipe(dest('dist'));
+const outputName = {
+  js: "index.js",
+  css: "index.css"
 };
 
-function test1() {
+function copyFiles() {
+  return src(paths.pages).pipe(dest(tsconfig.compilerOptions.outDir));
+}
+
+function bundleJS() {
   return browserify({
-    basedir: '.',
+    basedir: ".",
     debug: true,
-    entries: ['src/index.ts'],
+    entries: ["src/index.ts"],
     cache: {},
     packageCache: {}
   })
-    .plugin(tsify)
-    .transform('babelify', {
-      presets: ["@babel/preset-env"],
-      extensions: ['.ts']
-    })
+    .plugin(tsify, tsconfig.compilerOptions)
     .bundle()
-    .pipe(source('index.js'))
+    .pipe(source(outputName.js))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(dest('dist'));
-};
+    .pipe(sourcemaps.write(tsconfig.compilerOptions.mapRoot))
+    .pipe(dest(tsconfig.compilerOptions.outDir));
+}
 
 const minifyCSS = () => {
-  return src('./src/*.css')
+  return src("./src/*.css")
     .pipe(cleanCSS())
-    .pipe(concat('index.css'))
-    .pipe(dest('dist'));
+    .pipe(concat(outputName.css))
+    .pipe(dest(tsconfig.compilerOptions.outDir));
 };
 
-exports.default = series(parallel(test2, test1, minifyCSS));
+exports.default = series(parallel(copyFiles, bundleJS, minifyCSS));

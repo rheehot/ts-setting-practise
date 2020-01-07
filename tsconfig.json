@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES3",
+    "target": "ES5",
     "module": "commonjs",
-    "outDir": "public",
     "strict": true,
+    "outDir": "dist",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "mapRoot": "./"
   },
   "include": [
     "src/**/*"
